@@ -1,0 +1,78 @@
+[CmdletBinding(SupportsShouldProcess = $true)]
+param(
+    [switch]$IncludeLocalEnv,
+    [string]$ProjectRoot = ""
+)
+
+$ErrorActionPreference = "Stop"
+
+if ($ProjectRoot) {
+    $root = Resolve-Path $ProjectRoot
+}
+else {
+    $root = Resolve-Path (Join-Path $PSScriptRoot "..")
+}
+
+function Assert-InProject {
+    param([Parameter(Mandatory = $true)][string]$Path)
+
+    $fullPath = [System.IO.Path]::GetFullPath((Join-Path $root $Path))
+    $rootPath = [System.IO.Path]::GetFullPath($root)
+    if (-not $fullPath.StartsWith($rootPath, [System.StringComparison]::OrdinalIgnoreCase)) {
+        throw "Refusing to clean outside project root: $fullPath"
+    }
+    return $fullPath
+}
+
+function Remove-ProjectPath {
+    param([Parameter(Mandatory = $true)][string]$Path)
+
+    $fullPath = Assert-InProject $Path
+    if (-not (Test-Path -LiteralPath $fullPath)) {
+        return
+    }
+    if ($PSCmdlet.ShouldProcess($fullPath, "Remove generated artifact")) {
+        Remove-Item -LiteralPath $fullPath -Recurse -Force
+        Write-Host "Removed $Path"
+    }
+}
+
+$artifactPaths = @(
+    ".pytest_cache",
+    ".mypy_cache",
+    ".ruff_cache",
+    ".runlogs",
+    "backend\.pytest_cache",
+    "backend\.mypy_cache",
+    "backend\.ruff_cache",
+    "backend\.venv",
+    "backend\logs",
+    "backend\tmp",
+    "backend\dist",
+    "frontend\node_modules",
+    "frontend\dist",
+    "frontend\logs",
+    "frontend\tmp",
+    "logs",
+    "tmp",
+    "dist",
+    "payment-observability-dashboard.zip"
+)
+
+foreach ($path in $artifactPaths) {
+    Remove-ProjectPath $path
+}
+
+Get-ChildItem -LiteralPath $root -Directory -Recurse -Force -Filter "__pycache__" |
+    ForEach-Object {
+        $relativePath = [System.IO.Path]::GetRelativePath($root, $_.FullName)
+        Remove-ProjectPath $relativePath
+    }
+
+if ($IncludeLocalEnv) {
+    foreach ($path in @(".env", "backend\.env", "frontend\.env")) {
+        Remove-ProjectPath $path
+    }
+}
+
+Write-Host "Cleanup completed. Run .\scripts\setup.ps1 to reinstall dependencies."
