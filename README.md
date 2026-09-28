@@ -134,7 +134,7 @@ Interactive API documentation is available at `http://127.0.0.1:8000/docs` while
 ### 1. Clone
 
 ```bash
-git clone https://github.com/MelekCreed/Real-Time-Payment-Observability-Dashboard.git
+git clone https://github.com/MoallaMelek/Real-Time-Payment-Observability-Dashboard.git
 cd Real-Time-Payment-Observability-Dashboard
 ```
 
