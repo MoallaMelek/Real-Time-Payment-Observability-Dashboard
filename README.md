@@ -258,3 +258,30 @@ Built as a software engineering portfolio project exploring real-time dashboards
 ---
 
 From synthetic payment events to actionable operational insight.
+
+<!-- certifications:start -->
+## Relevant Certifications
+
+Related training completed by **Melek Moalla**, with the connection to this project stated below.
+
+<a href="https://coursera.org/verify/DQZ61608JYWW"><img width="360" src="assets/certifications/aws-agentic.svg" alt="Amazon Web Services: Gen AI Dev- Agentic AI Solutions and Tool Integrations" /></a>
+
+**Amazon Web Services · Gen AI Dev- Agentic AI Solutions and Tool Integrations**  
+Related to the chatbot’s controlled tool catalogue, tool selection, and grounded response workflow.  
+[Verify / issuer record](https://coursera.org/verify/DQZ61608JYWW) · [Original PDF](https://github.com/MoallaMelek/MoallaMelek/blob/master/certificates/aws-agentic.pdf)
+
+<a href="https://coursera.org/verify/3SRF1BKFHQ9M"><img width="360" src="assets/certifications/vanderbilt-agents.svg" alt="Vanderbilt University: AI Agents and Agentic AI with Python &amp; Generative AI" /></a>
+
+**Vanderbilt University · AI Agents and Agentic AI with Python & Generative AI**  
+Related to Python tool interfaces and conversational state in the chatbot. Its tools are constrained; this is not an unrestricted autonomous agent.  
+[Verify / issuer record](https://coursera.org/verify/3SRF1BKFHQ9M) · [Original PDF](https://github.com/MoallaMelek/MoallaMelek/blob/master/certificates/vanderbilt-agents.pdf)
+
+<a href="https://coursera.org/verify/KN4I9UGNT0WZ"><img width="360" src="assets/certifications/aws-genai-design.svg" alt="Amazon Web Services: Gen AI Dev- Analyze Requirements &amp; Design GenAI Solutions" /></a>
+
+**Amazon Web Services · Gen AI Dev- Analyze Requirements & Design GenAI Solutions**  
+Related to the separation of business requirements, allowed data access, retrieval, and grounded response composition.  
+[Verify / issuer record](https://coursera.org/verify/KN4I9UGNT0WZ) · [Original PDF](https://github.com/MoallaMelek/MoallaMelek/blob/master/certificates/aws-genai-design.pdf)
+
+<sub>The AWS credentials are Coursera course completions. The association concerns learning; it does not claim an AWS deployment or issuer endorsement.</sub>
+
+<!-- certifications:end -->
