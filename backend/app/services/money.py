@@ -2,6 +2,7 @@
 
 from decimal import Decimal, InvalidOperation
 from typing import Any
+from math import isfinite
 
 
 def millimes_to_tnd(raw_amount: Any, scale: float) -> float:
@@ -11,6 +12,13 @@ def millimes_to_tnd(raw_amount: Any, scale: float) -> float:
     receive already-normalized TND amounts and must never divide again.
     """
     try:
-        return float(Decimal(str(raw_amount)) / Decimal(str(scale)))
+        amount = Decimal(str(raw_amount))
+        divisor = Decimal(str(scale))
+        if not amount.is_finite() or not divisor.is_finite() or divisor <= 0:
+            raise ValueError("Monetary amount must be finite and scale must be positive and finite")
+        result = float(amount / divisor)
+        if not isfinite(result):
+            raise ValueError("Monetary amount exceeds the supported range")
+        return result
     except (InvalidOperation, ValueError, TypeError) as exc:
         raise ValueError(f"Invalid monetary amount: {raw_amount!r}") from exc

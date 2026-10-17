@@ -85,6 +85,13 @@ class WebSocketManager:
             for websocket in stale:
                 self._clients.pop(websocket, None)
             self._stale_connections += len(stale)
+        # Removed clients no longer have a disconnect path to their writer.
+        # Cancel and await idle writers outside the lock to avoid orphan tasks.
+        writers = [state.writer for state in states if state.stale and state.writer]
+        for writer in writers:
+            writer.cancel()
+        if writers:
+            await asyncio.gather(*writers, return_exceptions=True)
 
     async def _writer(self, state: _ClientState) -> None:
         while True:

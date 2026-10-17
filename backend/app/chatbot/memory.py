@@ -328,11 +328,14 @@ class ConversationMemory:
         raw_values = result_summary.get("result_values") if isinstance(result_summary.get("result_values"), dict) else {}
         if not source_values and raw_values:
             source_values = raw_values
-        rate = cls._number(result_summary.get("rate") or source_values.get("refusal_rate") or derived_values.get("refusal_rate"))
-        count = cls._number(result_summary.get("count") or result_summary.get("secondary_value") or source_values.get("refused"))
+        def first_present(*values: Any) -> Any:
+            return next((value for value in values if value is not None), None)
+
+        rate = cls._number(first_present(result_summary.get("rate"), source_values.get("refusal_rate"), derived_values.get("refusal_rate")))
+        count = cls._number(first_present(result_summary.get("count"), result_summary.get("secondary_value"), source_values.get("refused")))
         primary = result_summary.get("primary_value")
         if primary is None and source_values:
-            primary = source_values.get("transactions") or source_values.get("active_tpe")
+            primary = first_present(source_values.get("transactions"), source_values.get("active_tpe"))
         if primary is None and count is None and rate is None and not source_values and not derived_values:
             return None
         metric = str(result_summary.get("metric") or state.last_result_metric or state.last_metric or "").strip() or None
