@@ -40,3 +40,18 @@ class WebSocketManagerTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual([payload["state_version"] for payload in websocket.sent], [2])
         self.assertEqual((await manager.metrics())["messages_sent"], 1)
         await manager.disconnect(websocket)  # type: ignore[arg-type]
+
+    async def test_stale_client_cleanup_cancels_idle_writer(self) -> None:
+        manager = WebSocketManager()
+        websocket = SlowWebSocket()
+        await manager.connect(websocket)  # type: ignore[arg-type]
+        writer = manager._clients[websocket].writer
+        await asyncio.sleep(0)
+        websocket.client_state = WebSocketState.DISCONNECTED
+
+        await manager.broadcast({'state_version': 1})
+
+        self.assertEqual(manager.count, 0)
+        self.assertTrue(writer.done())
+        self.assertTrue(writer.cancelled())
+        self.assertEqual((await manager.metrics())['stale_connections'], 1)
