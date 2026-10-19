@@ -147,6 +147,15 @@ Copy-Item frontend\.env.example frontend\.env
 
 The checked-in examples use synthetic data and localhost services. Do not place real credentials or production connection details in committed files.
 
+For Linux/macOS, copy the examples from the repository root with:
+
+```bash
+cp backend/.env.example backend/.env
+cp frontend/.env.example frontend/.env
+```
+
+Keep `VITE_WS_URL` pointed at `/ws/payments`, including the port. Use `ws://` for a local HTTP backend and `wss://` behind HTTPS; `VITE_API_URL` is the HTTP API origin, not the WebSocket address. Restart the Vite development server after editing its environment file.
+
 ### 3. Start the backend
 
 ```powershell
