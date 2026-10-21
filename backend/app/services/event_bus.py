@@ -110,7 +110,6 @@ class InMemoryEventBus:
                             topic,
                             getattr(handler, "__qualname__", type(handler).__name__),
                         )
-                return
 
             for event in events:
                 for handler in subscribers:
