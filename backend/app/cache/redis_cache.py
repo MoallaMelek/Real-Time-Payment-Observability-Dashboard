@@ -20,7 +20,11 @@ class RedisCache:
     async def get(self, key: str) -> Any | None:
         started = perf_counter()
         try:
-            value = await self._redis.get(key)
+            try:
+                value = await self._redis.get(key)
+            except UnicodeDecodeError:
+                logger.warning("redis_cache_invalid_encoding key=%s", key)
+                return None
             if self.status:
                 self.status.mark_available(round((perf_counter() - started) * 1000, 2))
         except Exception:
