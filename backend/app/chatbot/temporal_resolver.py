@@ -78,6 +78,7 @@ class TemporalResolver:
         "huit": 8,
         "neuf": 9,
         "dix": 10,
+        "trente": 30,
         "premier": 1,
         "1er": 1,
         "deuxieme": 2,
