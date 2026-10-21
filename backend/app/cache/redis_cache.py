@@ -31,7 +31,7 @@ class RedisCache:
             return None
         try:
             return json.loads(value)
-        except json.JSONDecodeError:
+        except (json.JSONDecodeError, UnicodeDecodeError):
             logger.warning("redis_cache_invalid_json key=%s", key)
             return None
 
