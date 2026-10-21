@@ -125,7 +125,7 @@ class TemporalResolver:
         matches: list[tuple[int, TemporalRange]] = []
         patterns: tuple[tuple[str, date, ChatPeriod | None, str], ...] = (
             (r"\b(aujourd'hui|today)\b", reference, "today", "aujourd'hui"),
-            (r"\b(hier|yesterday)\b", reference - timedelta(days=1), "yesterday", "hier"),
+            (r"(?<!avant )(?<!avant-)\b(hier|yesterday)\b", reference - timedelta(days=1), "yesterday", "hier"),
             (r"\b(avant-hier|avant hier)\b", reference - timedelta(days=2), None, "avant-hier"),
             (r"\b(demain|tomorrow)\b", reference + timedelta(days=1), None, "demain"),
         )
