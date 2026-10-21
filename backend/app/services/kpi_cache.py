@@ -36,7 +36,8 @@ class InMemoryKpiCache:
             return self._snapshot
 
     async def close(self) -> None:
-        return None
+        async with self._lock:
+            self._snapshot = None
 
 
 class RedisKpiCache:
