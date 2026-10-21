@@ -92,6 +92,11 @@ class InMemoryEventBus:
                     )
 
     async def _publish_batch(self, topic: EventTopic, events: list[Any]) -> None:
+        """Prefer batch handlers; single handlers are a fallback for batch delivery.
+
+        Consumers may register both modes, as TransactionEngine does. Calling
+        both would process legitimate events twice and pollute deduplication metrics.
+        """
         if not events:
             return
         async with self._locks[topic]:
@@ -110,6 +115,8 @@ class InMemoryEventBus:
                             topic,
                             getattr(handler, "__qualname__", type(handler).__name__),
                         )
+
+                return
 
             for event in events:
                 for handler in subscribers:
