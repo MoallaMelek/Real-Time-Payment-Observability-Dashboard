@@ -20,7 +20,7 @@ class MemoryCache:
         return value
 
     async def set(self, key: str, value: Any, ttl_seconds: int | None = None) -> None:
-        expires_at = time.monotonic() + ttl_seconds if ttl_seconds else None
+        expires_at = time.monotonic() + ttl_seconds if ttl_seconds is not None else None
         self._store[key] = (value, expires_at)
 
     async def delete(self, key: str) -> None:
