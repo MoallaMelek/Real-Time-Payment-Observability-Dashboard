@@ -1,6 +1,6 @@
 """Centralized monetary normalization for SQL Server monetary values."""
 
-from decimal import Decimal, InvalidOperation
+from decimal import Decimal, DecimalException
 from typing import Any
 from math import isfinite
 
@@ -20,5 +20,5 @@ def millimes_to_tnd(raw_amount: Any, scale: float) -> float:
         if not isfinite(result):
             raise ValueError("Monetary amount exceeds the supported range")
         return result
-    except (InvalidOperation, ValueError, TypeError) as exc:
+    except (DecimalException, ValueError, TypeError) as exc:
         raise ValueError(f"Invalid monetary amount: {raw_amount!r}") from exc
